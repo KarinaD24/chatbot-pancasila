@@ -2,8 +2,9 @@ streamlit
 requests
 gtts
 speechrecognition
-python-pptx
+PyPDF2
 playsound==1.2.2
 sentence-transformers
 scikit-learn
 numpy
+nltk

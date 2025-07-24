@@ -8,10 +8,7 @@ from playsound import playsound
 from gtts import gTTS
 from io import BytesIO
 import PyPDF2
-from nltk.tokenize import sent_tokenize
-import nltk
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
@@ -38,17 +35,19 @@ def extract_text_from_pdf(pdf_path):
     
     return text.strip()
 
-def chunking(text, max_len=500):
-    sentences = sent_tokenize(text)
+def chunking(study_material):
+    max_len = 1000 # Max text length in each chunk
+    sentences = re.split(r'(?<=[.!?]) +', study_material)
     chunks = []
     curr_chunk = ""
 
-    for sentence in sentences:
-        if len(curr_chunk) + len(sentence) <= max_len:
-            curr_chunk += sentence + " "
+    for s in sentences:
+        if len(curr_chunk) + len(s) <= max_len:
+            curr_chunk += " " + s
         else:
             chunks.append(curr_chunk.strip())
-            curr_chunk = sentence + " "
+            curr_chunk = s # Start a new chunk with a new text
+    
     if curr_chunk:
         chunks.append(curr_chunk.strip())
 
